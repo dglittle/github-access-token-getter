@@ -51,10 +51,10 @@ _.run(function () {
                     'Accept' : 'application/json'
                 })).access_token
 
-                body = '<script>window.opener.postMessage(' + _.json({
+                body = '<script>window.opener.postMessage("' + _.escapeString(_.json({
                         access_token : access_token,
                         state : q.state
-                    }) + ', "*"); window.close()</script>'
+                    })) + '", "*"); window.close()</script>'
                 res.writeHead(200, {
                     'Content-Type': 'text/html; charset=utf-8',
                     'Content-Length': Buffer.byteLength(body)
