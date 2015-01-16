@@ -51,7 +51,10 @@ _.run(function () {
                     'Accept' : 'application/json'
                 })).access_token
 
-                body = '<script>window.opener.get_github_access_token_callback(' + _.json(access_token) + ', ' + _.json(q.state) + ');window.close()</script>'
+                body = '<script>window.opener.postMessage(' + _.json({
+                        access_token : access_token,
+                        state : q.state
+                    }) + ', "*"); window.close()</script>'
                 res.writeHead(200, {
                     'Content-Type': 'text/html; charset=utf-8',
                     'Content-Length': Buffer.byteLength(body)
