@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>test it</title>
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<style>
+
+body {
+    margin: 0px;
+}
+table {
+    border-collapse: collapse;
+}
+th, td {
+    padding: 0px;
+}
+
+</style>
+</head>
+<body>
+<script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+<script src="/gl519/index.js"></script>
+<script src="/gl519/aes.js"></script>
+
+<script src="//github-access-token-getter.herokuapp.com/index.js"></script>
+<script>
+
+$(function () {
+	$(document).ajaxError(function () {
+		alert('something bad happened.. not sure what')
+	})
+
+	$('body').append($('<button/>').text('create test file in github-access-token-getter').click(function () {
+		get_github_access_token('repo', function (access_token) {
+			$.ajax({
+				type : 'PUT',
+				url : 'https://api.github.com/repos/dglittle/github-access-token-getter/contents/testfile2.txt?access_token=' + access_token,
+				data : _.json({
+					path : 'testfile2.txt',
+					message : 'test message',
+					content : Base64.encode('hello there 2')
+				}),
+				success : function (x) {
+					$('body').append($('<div/>').text(_.json(x)))
+				}
+			})
+
+		})
+	}))
+})
+
+</script>
+</body>
+</html>
