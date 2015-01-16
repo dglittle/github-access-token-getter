@@ -1,6 +1,6 @@
 
 get_github_access_token = function (scope, cb) {
-	$.get('https://github-access-token-getter/client_id', function (client_id) {
+	$.get('https://github-access-token-getter.herokuapp.com/client_id', function (client_id) {
 		var state = _.randomString(20)
 		window.get_github_access_token_callback = function (access_token) {
 			cb(access_token)
