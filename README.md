@@ -1,7 +1,7 @@
 github-access-token-getter
 ==========================
 
-Let's web pages let users oauth into github without needing a server of their own. The oauth access token is given to the webpage itself. Use it like this:
+Lets web pages let users oauth into github without needing a server of their own. The oauth access token is given to the webpage itself. Use it like this:
 
 ```
 <script src="//github-access-token-getter.herokuapp.com/index.js"></script>
