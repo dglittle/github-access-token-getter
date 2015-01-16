@@ -1,6 +1,25 @@
 
 var _ = require('gl519')
 
+corsSend = function (req, res, body, mime) {
+    if (!mime) mime = 'text/plain'
+    if (typeof body != 'string') {
+        body = _.json(body)
+        if (!body) body = 'null'
+        mime = 'application/json'
+    }
+    var headers = {
+        'Content-Type': mime + '; charset=utf-8',
+        'Content-Length': Buffer.byteLength(body)
+    }
+    if (req.headers.origin) {
+        headers['Access-Control-Allow-Origin'] = req.headers.origin
+        headers['Access-Control-Allow-Credentials'] = 'true'
+    }
+    res.writeHead(200, headers)
+    res.end(body)
+}
+
 _.wget = function (method, url, params, encoding, extraHeaders) {
     if (method && method.match(/:/)) {
         return _.wget.apply(null, [null].concat(_.toArray(arguments)))

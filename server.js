@@ -1,13 +1,14 @@
 
-var _ = require('gl519')
-require('./server_utils.js')
-
 process.on('uncaughtException', function (err) {
     try {
         console.log(err)
         console.log(err.stack)
     } catch (e) {}
 })
+
+var _ = require('gl519')
+require('./server_utils.js')
+try { require('./_config.js') } catch (e) {}
 
 _.run(function () {
     if (!process.env['PORT']) process.env['PORT'] = 5000
@@ -34,12 +35,7 @@ _.run(function () {
     })
 
     app.all(/\/client_id/, function (req, res) {
-        var body = process.env.GITHUB_CLIENT_ID
-        res.writeHead(200, {
-            'Content-Type': 'text/plain; charset=utf-8',
-            'Content-Length': Buffer.byteLength(body)
-        })
-        res.end(body)
+        corsSend(req, res, process.env.GITHUB_CLIENT_ID)
     })
 
     app.all(/\/oauth/, function (req, res, next) {
