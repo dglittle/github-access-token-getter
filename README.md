@@ -9,7 +9,7 @@ Lets web pages let users oauth into github without needing a server of their own
 
 get_github_access_token('repo' /* scope */, function (access_token) {
 	// make authenticated github API calls using access_token,
-	// e.g. https://api.github.com/user?access_token=' + access_token
+	// e.g. "https://api.github.com/user?access_token=" + access_token
 })
 
 </script>
