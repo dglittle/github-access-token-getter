@@ -30,12 +30,16 @@ _.run(function () {
         res.sendFile(require('path').join(__dirname, 'index.html'))
     })
 
+    var indexJs = null
     app.get('/index.js', function (req, res) {
-        res.sendFile(require('path').join(__dirname, 'index.js'))
-    })
-
-    app.all(/\/client_id/, function (req, res) {
-        corsSend(req, res, process.env.GITHUB_CLIENT_ID)
+        _.run(function () {
+            if (!indexJs) indexJs = _.p(require('fs').readFile(require('path').join(__dirname, 'index.js'), { encoding : 'utf8' }, _.p())).replace(/GITHUB_CLIENT_ID/g, process.env.GITHUB_CLIENT_ID)
+            res.writeHead(200, {
+                'Content-Type': 'application/javascript; charset=utf-8',
+                'Content-Length': Buffer.byteLength(indexJs)
+            })
+            res.end(indexJs)
+        })
     })
 
     app.all(/\/oauth/, function (req, res, next) {
