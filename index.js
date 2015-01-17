@@ -13,6 +13,5 @@
 			}
 		}
 		var w = window.open('https://github.com/login/oauth/authorize?client_id=GITHUB_CLIENT_ID&scope=' + scope + '&state=' + state)
-		console.log('w = ', w)
 	}
 })();
