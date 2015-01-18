@@ -8,6 +8,7 @@ process.on('uncaughtException', function (err) {
 
 var _ = require('gl519')
 require('./server_utils.js')
+require('./index.js')
 try { require('./_config.js') } catch (e) {}
 
 _.run(function () {
@@ -30,16 +31,8 @@ _.run(function () {
         res.sendFile(require('path').join(__dirname, 'index.html'))
     })
 
-    var indexJs = null
     app.get('/index.js', function (req, res) {
-        _.run(function () {
-            if (!indexJs) indexJs = _.p(require('fs').readFile(require('path').join(__dirname, 'index.js'), { encoding : 'utf8' }, _.p())).replace(/GITHUB_CLIENT_ID/g, process.env.GITHUB_CLIENT_ID)
-            res.writeHead(200, {
-                'Content-Type': 'application/javascript; charset=utf-8',
-                'Content-Length': Buffer.byteLength(indexJs)
-            })
-            res.end(indexJs)
-        })
+        res.sendFile(require('path').join(__dirname, 'index.js'))
     })
 
     app.all(/\/oauth/, function (req, res, next) {
@@ -48,7 +41,7 @@ _.run(function () {
                 var q = require('url').parse(req.url, true).query
 
                 var access_token = _.unJson(_.wget('https://github.com/login/oauth/access_token', {
-                    client_id : process.env.GITHUB_CLIENT_ID,
+                    client_id : GITHUB_ACCESS_TOKEN_GETTER_CLIENT_ID,
                     client_secret : process.env.GITHUB_CLIENT_SECRET,
                     code : q.code
                 }, null, {
